@@ -34,6 +34,12 @@ use one):
 omarchy bar move lonefox.workspaces --section left
 ```
 
+## Remove
+
+```bash
+omarchy plugin remove lonefox.workspaces
+```
+
 ## License
 
 MIT — see [LICENSE](LICENSE).
