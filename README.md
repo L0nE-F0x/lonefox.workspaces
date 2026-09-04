@@ -3,8 +3,6 @@
 Omarchy bar widget: workspace number indicators with a rich hover card that shows
 exactly what is running on each workspace.
 
-![Hover card showing Workspace 2 with one window: X — Home / X](preview.png)
-
 ## Features
 
 - **Live hover card** — hovering a workspace chip shows its name, window count,
