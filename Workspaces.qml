@@ -49,6 +49,30 @@ BarWidget {
     root.bar.run("hyprctl dispatch " + Util.shellQuote("hl.dsp.focus({ workspace = \"" + id + "\" })"))
   }
 
+  // ------------------------------------------------------------- this bar --
+
+  // One bar surface is built per monitor, so "which workspace is current" is a
+  // question about this surface's own output. Hyprland.focusedWorkspace is a
+  // single global value: read from every bar it marks the same chip on all of
+  // them, which says nothing about what the other monitor is showing.
+  //
+  // The screen comes off the window the widget was instantiated into, not from
+  // Hyprland.focusedMonitor, and monitorFor() maps it to the Hyprland output.
+  readonly property var barScreen: root.QsWindow.window ? root.QsWindow.window.screen : null
+  readonly property var barMonitor: root.barScreen ? Hyprland.monitorFor(root.barScreen) : null
+
+  // The workspace this monitor is displaying, focused or not. -1 while the
+  // window is still being attached, which marks nothing rather than marking 1.
+  readonly property int visibleWorkspaceId: {
+    var m = root.barMonitor
+    return m && m.activeWorkspace ? m.activeWorkspace.id : -1
+  }
+
+  // Whether the keyboard is on this monitor. Compared by object identity
+  // against the focused monitor rather than read off a per-monitor flag, so it
+  // re-evaluates on every focus change Quickshell reports.
+  readonly property bool monitorFocused: root.barMonitor !== null && Hyprland.focusedMonitor === root.barMonitor
+
   // --------------------------------------------------------- app identity --
 
   // Quickshell's HyprlandToplevel carries the Wayland handle (appId) and the
@@ -271,11 +295,17 @@ BarWidget {
 
         readonly property var workspace: root.workspaceById(modelData)
         readonly property bool occupied: workspace !== null && workspace.toplevels.values.length > 0
-        readonly property bool focused: Hyprland.focusedWorkspace !== null && Hyprland.focusedWorkspace.id === modelData
+        // Shown on the monitor this bar is on -- the one thing a chip on this
+        // bar can honestly claim. A workspace visible on the other monitor is
+        // left unmarked here; its own bar marks it.
+        readonly property bool visibleHere: root.visibleWorkspaceId === modelData
+        // ...and holding the keyboard. Only one bar in the setup ever draws
+        // this, so the dot keeps meaning exactly "you are typing here".
+        readonly property bool focused: visibleHere && root.monitorFocused
 
         bar: root.bar
         text: focused ? "󱓻" : (modelData === 10 ? "0" : String(modelData))
-        opacity: occupied || focused ? 1 : 0.5
+        opacity: occupied || visibleHere ? 1 : 0.5
         horizontalMargin: 6
         verticalPadding: 6
         fixedWidth: root.vertical ? root.barSize : Style.space(20)
@@ -287,6 +317,25 @@ BarWidget {
         tooltipText: ""
 
         onTooltipHoveredChanged: root.noteHover(chip, chip.modelData)
+
+        // The marker behind the label, drawn rather than glyphed: a filled
+        // block for the workspace this monitor is focused on, a hollow one for
+        // the workspace it is merely displaying. Two shapes rather than two
+        // colors, so it still reads under any theme, and z:-1 keeps it under
+        // WidgetButton's own text.
+        Rectangle {
+          z: -1
+          anchors.fill: parent
+          anchors.topMargin: Style.space(3)
+          anchors.bottomMargin: Style.space(3)
+          visible: chip.visibleHere
+          radius: Style.cornerRadius
+          color: chip.focused
+                 ? Qt.rgba(chip.foreground.r, chip.foreground.g, chip.foreground.b, 0.18)
+                 : "transparent"
+          border.width: chip.focused ? 0 : Math.max(1, Style.space(1) / 2)
+          border.color: Qt.rgba(chip.foreground.r, chip.foreground.g, chip.foreground.b, 0.45)
+        }
       }
     }
   }
