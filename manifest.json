@@ -2,9 +2,9 @@
   "schemaVersion": 1,
   "id": "lonefox.workspaces",
   "name": "Workspace Hover Cards",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "author": "L0nE-F0x",
-  "description": "Workspace indicators with a rich hover card showing each window's app icon and title, with accurate icons for webapps and Steam games.",
+  "description": "Workspace indicators with a rich hover card: app icons and window titles for each workspace, growing into a live miniature preview of the workspace you can click into.",
   "license": "MIT",
   "kinds": [
     "bar-widget"
@@ -14,7 +14,7 @@
   },
   "barWidget": {
     "displayName": "Workspace Hover Cards",
-    "description": "Workspace indicators with a live hover card of app icons and window titles",
+    "description": "Workspace indicators with a hover card of app icons, window titles and a live workspace miniature",
     "category": "Compositor",
     "allowMultiple": false
   }
