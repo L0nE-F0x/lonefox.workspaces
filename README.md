@@ -2,6 +2,8 @@
 
 ![Workspace hover card over the Omarchy bar](preview.png)
 
+*Move onto the card and it grows into a live miniature of that workspace.*
+
 Omarchy bar widget: workspace number indicators with a rich hover card that shows
 exactly what is running on each workspace.
 
@@ -29,10 +31,6 @@ exactly what is running on each workspace.
 - Omarchy with the Quickshell bar (plugin API `schemaVersion` 1)
 - Hyprland (window positions and live captures use Hyprland IPC and the
   toplevel-export protocol)
-
-![Live workspace miniature](screenshots/hover-card-miniature.png)
-
-*Move onto the card and it grows into a live miniature of that workspace.*
 
 ![Compact hover card](screenshots/hover-card-compact.png)
 
