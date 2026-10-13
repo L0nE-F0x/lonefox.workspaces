@@ -32,7 +32,11 @@ exactly what is running on each workspace.
 
 ![Live workspace miniature](screenshots/hover-card-miniature.png)
 
-![Window list hover card](screenshots/hover-card-desktop.png)
+*Move onto the card and it grows into a live miniature of that workspace.*
+
+![Compact hover card](screenshots/hover-card-compact.png)
+
+*Resting on a chip shows the compact card: app icons and window titles.*
 
 ## Install
 
