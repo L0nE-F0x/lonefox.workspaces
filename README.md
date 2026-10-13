@@ -30,7 +30,9 @@ exactly what is running on each workspace.
 - Hyprland (window positions and live captures use Hyprland IPC and the
   toplevel-export protocol)
 
-![Hover card on the desktop](screenshots/hover-card-desktop.png)
+![Live workspace miniature](screenshots/hover-card-miniature.png)
+
+![Window list hover card](screenshots/hover-card-desktop.png)
 
 ## Install
 
